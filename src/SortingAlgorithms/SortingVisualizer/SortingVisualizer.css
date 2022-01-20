@@ -1,0 +1,33 @@
+/*-------------------------------------
+ styles for sortingVisualizer main area
+--------------------------------------*/
+.array-display-container {
+    width: auto;
+    padding: 0.5rem;
+    padding-top: 10%;
+    margin: 1rem;
+    position: relative;
+    align-items: center;
+}
+
+/* remember to adjust the array numbers for different viewport */
+.array-bar {
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: transparent;
+    margin-right: 0.125rem;
+    width: 3%;
+    height: 8.48485%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 2px solid black;
+}
+
+.algorithms-button {
+    margin-top: 20px;
+}
+
+.value-inside-bar {
+    font-size: 70%;
+}

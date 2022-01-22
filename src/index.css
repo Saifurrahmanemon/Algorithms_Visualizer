@@ -12,6 +12,22 @@ Global Styles
     padding: 0;
     box-sizing: border-box;
 }
+
+/* scrollbar css  */
+::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(229, 178, 239);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(186, 126, 198);
+}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

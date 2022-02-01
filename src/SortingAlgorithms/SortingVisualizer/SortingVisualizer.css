@@ -1,13 +1,13 @@
-/*-------------------------------------
- styles for sortingVisualizer main area
---------------------------------------*/
+@import "../../_settings/variables.css";
 
+/*-------------------------------------
+ styles for sortingVisualizer
+--------------------------------------*/
 .array-display-container {
-    /* background-color: aqua; */
     margin: 2rem;
     display: block;
-    width: auto;
-    height: auto;
+    max-width: 100%;
+    height: 55vh;
     padding: 2rem;
     position: relative;
     align-items: center;
@@ -17,39 +17,28 @@
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 }
 .array-bar-container {
-    height: auto;
+    height: 45vh;
     display: flex;
     align-items: flex-end;
 }
-
-/* remember to adjust the array numbers for different viewport */
-.array-bar {
-    display: inline-flex;
-    align-items: flex-end;
-    justify-content: center;
-    background-color: transparent;
-    margin-left: 0.125rem;
-    margin-right: 0.125rem;
-    padding: 0.6rem;
-    border: 2px solid black;
-
-    border-top-left-radius: 30px;
-    -webkit-border-top-left-radius: 30px;
-    -moz-border-top-left-radius: 30px;
-    -ms-border-top-left-radius: 30px;
-    -o-border-top-left-radius: 30px;
-
-    border-top-right-radius: 30px;
-    -webkit-border-top-right-radius: 30px;
-    -moz-border-top-right-radius: 30px;
-    -ms-border-top-right-radius: 30px;
-    -o-border-top-right-radius: 30px;
+.sorting-visualizer-title {
+    margin: 0.5rem;
+    color: var(--clr-primary-1);
 }
 
 .algorithms-button {
     margin-top: 20px;
+    text-align: center;
 }
 
-.value-inside-bar {
-    font-size: 70%;
+.time-and-comparisons-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0.8rem;
+    color: var(--clr-primary-1);
+}
+.time-and-comparisons-container strong {
+    /* font-size: 0.2rem; */
+    font-weight: 600;
+    color: var(--clr-black);
 }

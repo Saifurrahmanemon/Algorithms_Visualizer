@@ -9,13 +9,13 @@ import { selectionSort } from "../Algorithms/selectionSort";
 import ArrayBar from "../components/ArrayBar";
 import Timer from "../components/Timer";
 import RandomValueGenerator from "../utils/RandomValueGenerator";
+import { useTime } from "../utils/store";
 import "./SortingVisualizer.css";
 
 //TODO: need to reset timer on generateNewArray click
 //TODO: add function to select algorithms
 //TODO: add control array speed function
-//TODO: add a timer to calculate the time of sorting
-//* TODO: can not remember for now
+//TODO: can not remember for now
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
@@ -31,6 +31,7 @@ export default class SortingVisualizer extends React.Component {
             algorithm: "quickSort",
             timeouts: [],
             isAlgorithmSortOver: true,
+            // time: 0,
         };
     }
 
@@ -82,6 +83,8 @@ export default class SortingVisualizer extends React.Component {
     }
     //? for generating new array
     generateNewArray() {
+        this.resetTimer();
+
         const array = [];
         this.clearColorElement();
         for (let i = 0; i < this.state.count; i++) {
@@ -93,6 +96,7 @@ export default class SortingVisualizer extends React.Component {
                 arraySteps: [array],
                 currentStep: 0,
                 isAlgorithmSortOver: true,
+                time: 0,
             },
             () => {
                 this.generateSteps();
@@ -110,7 +114,6 @@ export default class SortingVisualizer extends React.Component {
         let timeouts = [];
         let i = 0;
 
-        //!this is the place where i need to be careful of
         while (i < steps.length - this.state.currentStep) {
             let timeout = setTimeout(() => {
                 let currentStep = this.state.currentStep;
@@ -120,7 +123,7 @@ export default class SortingVisualizer extends React.Component {
                     currentStep: currentStep + 1,
                     isAlgorithmSortOver: false,
                 });
-                //? comparing the currentStep with arraySteps and the state of isAlgorithmSortOver will remain false until the array is fully sorted.. Adding '+ 1' to currentStep because the arraySteps array is one step longer than the array..
+                //? comparing the currentStep with arraySteps and the state of isAlgorithmSortOver will remain false until the array is fully sorted.. Adding '+ 1' to currentStep because the arraySteps  state always will be '+1' bigger than the currentStep..
                 if (currentStep + 1 === i) {
                     this.setState({
                         isAlgorithmSortOver: true,
@@ -134,10 +137,12 @@ export default class SortingVisualizer extends React.Component {
 
         this.setState({
             timeouts: timeouts,
-            // isAlgorithmSortOver: false,
         });
     };
-
+    //? this is for resetting the timer by using useTime hook from (store.js)
+    resetTimer = () => {
+        useTime.getState().resetTime();
+    };
     render() {
         const { array, colorElement, currentStep, count, isAlgorithmSortOver } =
             this.state;
@@ -152,7 +157,7 @@ export default class SortingVisualizer extends React.Component {
                     </button>
                     <button onClick={() => this.mergeSort()}>Merge Sort</button>
                     <button onClick={() => this.quickSort()}>Quick Sort</button>
-                    <button onClick={() => this.heapSort()}>Heap Sort</button>
+                    <button onClick={() => this.clearTimer()}>Heap Sort</button>
                     <button onClick={() => this.startVisualizer()}>
                         Bubble Sort
                     </button>

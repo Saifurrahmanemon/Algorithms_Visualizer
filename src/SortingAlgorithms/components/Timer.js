@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useTime } from "../utils/store";
+
 export default function Timer({ currentStep, isAlgorithmSortOver }) {
-    const [time, setTime] = useState(0);
+    const time = useTime((state) => state.time);
+    const setTime = useTime((state) => state.setTime);
 
     useEffect(() => {
         let interval;
         if (isAlgorithmSortOver === false) {
             interval = setInterval(() => {
-                setTime((prevTime) => prevTime + 10);
+                setTime();
             }, 10);
         } else if (isAlgorithmSortOver === true) {
             clearInterval(interval);

@@ -2,7 +2,7 @@ import { colors } from "../utils/config";
 import "./ArrayBar.css";
 export default function ArrayBar({ value, index, color, count }) {
     return (
-        <>
+        <div>
             <div
                 className="array-bar"
                 key={index}
@@ -14,6 +14,6 @@ export default function ArrayBar({ value, index, color, count }) {
             >
                 <span className="value-inside-bar">{value}</span>
             </div>
-        </>
+        </div>
     );
 }

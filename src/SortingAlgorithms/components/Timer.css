@@ -1,0 +1,14 @@
+.time-and-comparisons-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0.8rem;
+    color: var(--clr-primary-1);
+}
+.time-and-comparisons-container span {
+    width: 30vh;
+}
+.time-and-comparisons-container strong {
+    /* font-size: 0.2rem; */
+    font-weight: 600;
+    color: var(--clr-black);
+}

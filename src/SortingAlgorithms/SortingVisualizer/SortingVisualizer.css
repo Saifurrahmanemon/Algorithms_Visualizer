@@ -22,23 +22,24 @@
     align-items: flex-end;
 }
 .sorting-visualizer-title {
-    margin: 0.5rem;
+    margin: 0.7rem;
     color: var(--clr-primary-1);
-}
-
-.algorithms-button {
-    margin-top: 20px;
     text-align: center;
 }
 
-.time-and-comparisons-container {
+.algorithms-button {
     display: flex;
-    justify-content: space-evenly;
-    margin: 0.8rem;
-    color: var(--clr-primary-1);
+    justify-content: space-around;
+    margin-top: 20px;
+    text-align: center;
 }
-.time-and-comparisons-container strong {
-    /* font-size: 0.2rem; */
-    font-weight: 600;
-    color: var(--clr-black);
+.controller-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.play-algorithms-button {
+    font-size: 2.5rem;
+    color: black;
 }

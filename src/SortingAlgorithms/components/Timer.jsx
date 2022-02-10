@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useTime } from "../utils/store";
+import "./Timer.css";
 
-export default function Timer({ currentStep, isAlgorithmSortOver }) {
+export default function Timer({ currentStep, isAlgorithmSortOver, algorithm }) {
     const time = useTime((state) => state.time);
     const setTime = useTime((state) => state.setTime);
 
@@ -22,7 +23,7 @@ export default function Timer({ currentStep, isAlgorithmSortOver }) {
                 Comparisons: <strong>{currentStep}</strong>
             </span>
             <span>
-                Time:
+                Time:{" "}
                 <strong>
                     <span>
                         {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
@@ -30,8 +31,11 @@ export default function Timer({ currentStep, isAlgorithmSortOver }) {
                     <span>
                         {("0" + Math.floor((time / 1000) % 60)).slice(-2)}:
                     </span>
-                    <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
+                    <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>s
                 </strong>
+            </span>
+            <span>
+                Algorithm: <strong>{algorithm}</strong>
             </span>
         </div>
     );

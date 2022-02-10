@@ -1,4 +1,7 @@
 import React from "react";
+//React Icons
+import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
+import { MdReplay } from "react-icons/md";
 // algorithms
 import { bubbleSort } from "../Algorithms/bubbleSort";
 import { insertionSort } from "../Algorithms/insertionSort";
@@ -6,13 +9,13 @@ import { mergeSort } from "../Algorithms/mergeSort";
 import { quickSort } from "../Algorithms/quickSort";
 import { selectionSort } from "../Algorithms/selectionSort";
 // Components
+import AlgorithmsSelector from "../components/AlgorithmsSelector";
 import ArrayBar from "../components/ArrayBar";
 import Timer from "../components/Timer";
 import RandomValueGenerator from "../utils/RandomValueGenerator";
 import { useTime } from "../utils/store";
 import "./SortingVisualizer.css";
 
-//TODO: need to reset timer on generateNewArray click
 //TODO: add function to select algorithms
 //TODO: add control array speed function
 //TODO: can not remember for now
@@ -27,11 +30,10 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: [],
             currentStep: 0,
             count: 20,
-            delayAnimation: 50,
-            algorithm: "quickSort",
+            delayAnimation: 100,
+            algorithm: "bubbleSort",
             timeouts: [],
             isAlgorithmSortOver: true,
-            // time: 0,
         };
     }
 
@@ -48,7 +50,6 @@ export default class SortingVisualizer extends React.Component {
         let newArray = this.state.array.slice();
         let newSteps = this.state.arraySteps.slice();
         let newColorSteps = this.state.colorSteps.slice();
-        // for timer function
 
         let barIndexPosition = 0;
         this._ALGORITHMS[this.state.algorithm](
@@ -62,7 +63,7 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: newColorSteps,
         });
     }
-    //? this is for reseting the color of the array after finishing  Animation
+    //? this is for resetting  color of the array after finishing  Animation
     clearColorElement = () => {
         let blankKey = new Array(this.state.count).fill(1);
 
@@ -76,8 +77,10 @@ export default class SortingVisualizer extends React.Component {
         this.state.timeouts.forEach((timeout) => clearTimeout(timeout));
         this.setState({
             timeouts: [],
+            isAlgorithmSortOver: true,
         });
     };
+
     componentDidMount() {
         this.generateNewArray();
     }
@@ -87,6 +90,7 @@ export default class SortingVisualizer extends React.Component {
 
         const array = [];
         this.clearColorElement();
+        this.clearTimeouts();
         for (let i = 0; i < this.state.count; i++) {
             array.push(RandomValueGenerator(20, 230));
         }
@@ -104,7 +108,7 @@ export default class SortingVisualizer extends React.Component {
         );
     }
 
-    //? this is for starting  animation
+    //? this is for starting visualization
     startVisualizer = () => {
         let steps = this.state.arraySteps;
         let colorSteps = this.state.colorSteps;
@@ -123,48 +127,99 @@ export default class SortingVisualizer extends React.Component {
                     currentStep: currentStep + 1,
                     isAlgorithmSortOver: false,
                 });
-                //? comparing the currentStep with arraySteps and the state of isAlgorithmSortOver will remain false until the array is fully sorted.. Adding '+ 1' to currentStep because the arraySteps  state always will be '+1' bigger than the currentStep..
-                if (currentStep + 1 === i) {
+                //* comparing the currentStep with steps.length and the state of isAlgorithmSortOver will remain false until the array is fully sorted.. Adding '+ 1' to currentStep because the steps.length always will be '+1' bigger than the currentStep..
+                if (currentStep + 1 === steps.length) {
                     this.setState({
                         isAlgorithmSortOver: true,
                     });
                 }
-
-                timeouts.push(timeout);
             }, this.state.delayAnimation * i);
+            timeouts.push(timeout);
             i++;
         }
 
         this.setState({
             timeouts: timeouts,
+            isAlgorithmSortOver: false,
         });
     };
     //? this is for resetting the timer by using useTime hook from (store.js)
     resetTimer = () => {
         useTime.getState().resetTime();
     };
+    //? this is for changing the algorithm
+    selectAlgorithm = (event) => {
+        this.setState(
+            {
+                // this will set the value
+                algorithm: event.target.value,
+                currentStep: 0,
+                arraySteps: [
+                    this.state.arraySteps[
+                        this.state.currentStep === 0
+                            ? 0
+                            : this.state.currentStep - 1
+                    ],
+                ],
+            },
+            () => this.generateSteps()
+        );
+        this.clearTimeouts();
+        this.clearColorElement();
+        this.resetTimer();
+    };
+
     render() {
-        const { array, colorElement, currentStep, count, isAlgorithmSortOver } =
-            this.state;
+        const {
+            array,
+            colorElement,
+            currentStep,
+            count,
+            isAlgorithmSortOver,
+            algorithm,
+            timeouts,
+            arraySteps,
+        } = this.state;
+
+        let playAlgorithmsButton;
+
+        //? Set player controls
+        if (timeouts.length !== 0 && currentStep !== arraySteps.length) {
+            playAlgorithmsButton = (
+                <div onClick={() => this.clearTimeouts()}>
+                    <BsFillStopFill className="stop-icon" />
+                </div>
+            );
+        } else if (currentStep === arraySteps.length) {
+            playAlgorithmsButton = (
+                <div onClick={() => this.generateNewArray()}>
+                    <MdReplay className="replay-icon" />
+                </div>
+            );
+        } else {
+            playAlgorithmsButton = (
+                <div onClick={() => this.startVisualizer()}>
+                    <BsFillPlayFill className="start-icon" />
+                </div>
+            );
+        }
         return (
             <div className="sorting-visualizer-container">
-                <h4 className="sorting-visualizer-title">
-                    Sorting Algorithms Visualizer
-                </h4>
-                <div className="algorithms-button">
-                    <button onClick={() => this.generateNewArray()}>
-                        Generate New Array
-                    </button>
-                    <button onClick={() => this.mergeSort()}>Merge Sort</button>
-                    <button onClick={() => this.quickSort()}>Quick Sort</button>
-                    <button onClick={() => this.clearTimer()}>Heap Sort</button>
-                    <button onClick={() => this.startVisualizer()}>
-                        Bubble Sort
-                    </button>
-                </div>
+                <header>
+                    <h4 className="sorting-visualizer-title">
+                        Sorting Algorithms Visualizer
+                    </h4>
+                </header>
+                <AlgorithmsSelector
+                    values={Object.keys(this._ALGORITHMS)}
+                    currentValue={algorithm}
+                    onChange={this.selectAlgorithm}
+                />
+
                 <Timer
                     currentStep={currentStep}
                     isAlgorithmSortOver={isAlgorithmSortOver}
+                    algorithm={algorithm}
                 />
                 <div className="array-display-container">
                     <div className="array-bar-container">
@@ -177,6 +232,17 @@ export default class SortingVisualizer extends React.Component {
                                 count={count}
                             />
                         ))}
+                    </div>
+                </div>
+                <div className="controller-container">
+                    <div>
+                        <button onClick={() => this.generateNewArray()}>
+                            Generate New Array
+                        </button>
+                    </div>
+                    <div className="play-algorithms-button">
+                        {" "}
+                        {playAlgorithmsButton}
                     </div>
                 </div>
             </div>

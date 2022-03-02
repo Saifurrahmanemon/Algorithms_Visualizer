@@ -1,5 +1,5 @@
 import { insertStep, swap } from "../utils/helpers";
-export const quickSort = (array, barIndexPosition, arraySteps, colorSteps) => {
+const quickSort = (array, barIndexPosition, arraySteps, colorSteps) => {
     if (array.length < 2) {
         insertStep(array, barIndexPosition, arraySteps);
 
@@ -77,3 +77,5 @@ function pickPivot(array) {
 
     return middleIndex;
 }
+
+export default quickSort;

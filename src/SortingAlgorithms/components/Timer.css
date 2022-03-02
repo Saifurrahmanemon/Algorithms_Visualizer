@@ -9,6 +9,6 @@
 }
 .time-and-comparisons-container strong {
     /* font-size: 0.2rem; */
-    font-weight: 600;
+    font-weight: bold;
     color: var(--clr-black);
 }

@@ -1,4 +1,4 @@
-import { colors } from "../utils/config";
+import { colors } from "../utils/helpers";
 import "./ArrayBar.css";
 export default function ArrayBar({ value, index, color, count }) {
     return (
@@ -12,7 +12,7 @@ export default function ArrayBar({ value, index, color, count }) {
                     width: "40px",
                 }}
             >
-                <span className="value-inside-bar">{value}</span>
+                <strong className="value-inside-bar">{value}</strong>
             </div>
         </div>
     );

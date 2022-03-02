@@ -1,6 +1,6 @@
 import { insertStep } from "../utils/helpers";
 
-export const mergeSort = (array, barIndexPosition, arraySteps, colorSteps) => {
+const mergeSort = (array, barIndexPosition, arraySteps, colorSteps) => {
     if (array.length === 1) return array;
     let mid = Math.floor(array.length / 2);
     //dividing array into two halves recursively
@@ -91,3 +91,5 @@ const updateColor = (
     }
     colorSteps.push(colorKey);
 };
+
+export default mergeSort;

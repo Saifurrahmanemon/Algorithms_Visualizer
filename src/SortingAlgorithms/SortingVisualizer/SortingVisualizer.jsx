@@ -1,24 +1,32 @@
+//MUI
+import { Button } from "@mui/material";
 import React from "react";
 //React Icons
 import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
 import { MdReplay } from "react-icons/md";
-// algorithms
-import { bubbleSort } from "../Algorithms/bubbleSort";
-import { insertionSort } from "../Algorithms/insertionSort";
-import { mergeSort } from "../Algorithms/mergeSort";
-import { quickSort } from "../Algorithms/quickSort";
-import { selectionSort } from "../Algorithms/selectionSort";
+// Algorithms
+import {
+    bubbleSort,
+    insertionSort,
+    mergeSort,
+    quickSort,
+    selectionSort,
+} from "../Algorithms";
 // Components
-import AlgorithmsSelector from "../components/AlgorithmsSelector";
-import ArrayBar from "../components/ArrayBar";
-import Timer from "../components/Timer";
+import {
+    AlgorithmsSelector,
+    ArrayBar,
+    BarSizeController,
+    SpeedController,
+    Timer,
+} from "../components";
+//Utils
 import RandomValueGenerator from "../utils/RandomValueGenerator";
+//Zustand
 import { useTime } from "../utils/store";
+//CSS
 import "./SortingVisualizer.css";
 
-//TODO: add function to select algorithms
-//TODO: add control array speed function
-//TODO: can not remember for now
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
@@ -30,20 +38,47 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: [],
             currentStep: 0,
             count: 20,
-            delayAnimation: 100,
+            delayAnimation: 150,
             algorithm: "bubbleSort",
             timeouts: [],
             isAlgorithmSortOver: true,
         };
     }
 
-    _ALGORITHMS = {
+    ALGORITHMS = {
         bubbleSort: bubbleSort,
         mergeSort: mergeSort,
         insertionSort: insertionSort,
         selectionSort: selectionSort,
         quickSort: quickSort,
     };
+
+    componentDidMount() {
+        this.generateNewArray();
+    }
+    //? for generating new array
+    generateNewArray() {
+        this.resetTimer();
+        const array = [];
+        this.clearColorElement();
+        this.clearTimeouts();
+
+        for (let i = 0; i < this.state.count; i++) {
+            array.push(RandomValueGenerator(25, 230));
+        }
+        this.setState(
+            {
+                array: array,
+                arraySteps: [array],
+                currentStep: 0,
+                isAlgorithmSortOver: true,
+                time: 0,
+            },
+            () => {
+                this.generateSteps();
+            }
+        );
+    }
 
     //*this is the main core function i need to be careful of
     generateSteps() {
@@ -52,7 +87,7 @@ export default class SortingVisualizer extends React.Component {
         let newColorSteps = this.state.colorSteps.slice();
 
         let barIndexPosition = 0;
-        this._ALGORITHMS[this.state.algorithm](
+        this.ALGORITHMS[this.state.algorithm](
             newArray,
             barIndexPosition,
             newSteps,
@@ -80,33 +115,6 @@ export default class SortingVisualizer extends React.Component {
             isAlgorithmSortOver: true,
         });
     };
-
-    componentDidMount() {
-        this.generateNewArray();
-    }
-    //? for generating new array
-    generateNewArray() {
-        this.resetTimer();
-
-        const array = [];
-        this.clearColorElement();
-        this.clearTimeouts();
-        for (let i = 0; i < this.state.count; i++) {
-            array.push(RandomValueGenerator(20, 230));
-        }
-        this.setState(
-            {
-                array: array,
-                arraySteps: [array],
-                currentStep: 0,
-                isAlgorithmSortOver: true,
-                time: 0,
-            },
-            () => {
-                this.generateSteps();
-            }
-        );
-    }
 
     //? this is for starting visualization
     startVisualizer = () => {
@@ -143,11 +151,11 @@ export default class SortingVisualizer extends React.Component {
             isAlgorithmSortOver: false,
         });
     };
-    //? this is for resetting the timer by using useTime hook from (store.js)
+    //?  for resetting the timer by using useTime hook from (store.js)
     resetTimer = () => {
         useTime.getState().resetTime();
     };
-    //? this is for changing the algorithm
+    //?  for changing  algorithm
     selectAlgorithm = (event) => {
         this.setState(
             {
@@ -164,11 +172,20 @@ export default class SortingVisualizer extends React.Component {
             },
             () => this.generateSteps()
         );
-        this.clearTimeouts();
-        this.clearColorElement();
-        this.resetTimer();
-    };
 
+        this.generateNewArray();
+    };
+    //? for changing the bar size
+    changeBarCount = (event) => {
+        this.setState({ count: event.target.value });
+    };
+    //? for changing animation speed
+    changeAnimationSpeed = (event) => {
+        this.clearTimeouts();
+        this.setState({
+            delayAnimation: event.target.value,
+        });
+    };
     render() {
         const {
             array,
@@ -179,6 +196,7 @@ export default class SortingVisualizer extends React.Component {
             algorithm,
             timeouts,
             arraySteps,
+            delayAnimation,
         } = this.state;
 
         let playAlgorithmsButton;
@@ -211,7 +229,7 @@ export default class SortingVisualizer extends React.Component {
                     </h4>
                 </header>
                 <AlgorithmsSelector
-                    values={Object.keys(this._ALGORITHMS)}
+                    values={Object.keys(this.ALGORITHMS)}
                     currentValue={algorithm}
                     onChange={this.selectAlgorithm}
                 />
@@ -234,15 +252,32 @@ export default class SortingVisualizer extends React.Component {
                         ))}
                     </div>
                 </div>
+                <div className="generate-array-button">
+                    <Button
+                        color="inherit"
+                        variant="outlined"
+                        sx={{ fontSize: ".7rem" }}
+                        onClick={() => this.generateNewArray()}
+                    >
+                        Generate Array
+                    </Button>
+                </div>
                 <div className="controller-container">
-                    <div>
-                        <button onClick={() => this.generateNewArray()}>
-                            Generate New Array
-                        </button>
+                    <div className="controller">
+                        <BarSizeController
+                            changeBarCount={this.changeBarCount}
+                            count={count}
+                        />
                     </div>
                     <div className="play-algorithms-button">
-                        {" "}
                         {playAlgorithmsButton}
+                    </div>
+
+                    <div className="controller">
+                        <SpeedController
+                            changeAnimationSpeed={this.changeAnimationSpeed}
+                            currentSpeed={delayAnimation}
+                        />
                     </div>
                 </div>
             </div>

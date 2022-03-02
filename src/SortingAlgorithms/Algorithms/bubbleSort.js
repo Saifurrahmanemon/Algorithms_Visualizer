@@ -1,6 +1,6 @@
 import { swap } from "../utils/helpers";
 
-export const bubbleSort = (array, barIndexPosition, steps, colors) => {
+const bubbleSort = (array, barIndexPosition, steps, colors) => {
     let colorKey = colors[colors.length - 1].slice();
     let i, j;
     let swapped;
@@ -30,3 +30,5 @@ export const bubbleSort = (array, barIndexPosition, steps, colors) => {
 
     return;
 };
+
+export default bubbleSort;

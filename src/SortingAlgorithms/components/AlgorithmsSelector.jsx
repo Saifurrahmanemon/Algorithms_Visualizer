@@ -40,6 +40,7 @@ export default function AlgorithmsSelector({ values, currentValue, onChange }) {
                                             "& .MuiSvgIcon-root": {
                                                 fontSize: 15,
                                             },
+
                                         }}
                                     />
                                 }

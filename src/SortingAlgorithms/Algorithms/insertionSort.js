@@ -1,9 +1,4 @@
-export const insertionSort = (
-    array,
-    barIndexPosition,
-    arraySteps,
-    colorSteps
-) => {
+const insertionSort = (array, barIndexPosition, arraySteps, colorSteps) => {
     let colorKey = colorSteps[colorSteps.length - 1].slice();
 
     let i, j, key;
@@ -14,13 +9,13 @@ export const insertionSort = (
         while (j >= 0 && array[j] > key) {
             array[j + 1] = array[j];
             arraySteps.push(array.slice());
-            colorKey[i] = 3;
+            colorKey[i] = 2;
             if (i === j + 1) {
                 colorKey[j + 1] = 2;
             } else {
                 colorKey[j + 1] = 0;
             }
-            colorKey[j] = 1;
+            colorKey[j] = 2;
             colorSteps.push(colorKey.slice());
             colorKey[j + 1] = 1;
             colorKey[i] = 1;
@@ -33,3 +28,5 @@ export const insertionSort = (
     }
     colorSteps[colorSteps.length - 1] = new Array(array.length).fill(3);
 };
+
+export default insertionSort;

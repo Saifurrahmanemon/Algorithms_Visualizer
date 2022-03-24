@@ -4,66 +4,65 @@ const quickSort = (array, barIndexPosition, arraySteps, colorSteps) => {
         insertStep(array, barIndexPosition, arraySteps);
 
         let colorKey = colorSteps[colorSteps.length - 1].slice();
-        colorKey[barIndexPosition] = 3;
+        colorKey[barIndexPosition] = 2;
         colorSteps.push(colorKey);
         return;
     }
 
-    // pick median of three numbers as pivot and sent it to back
     swap(array, pickPivot(array), array.length - 1);
     insertStep(array, barIndexPosition, arraySteps);
     colorSteps.push(colorSteps[colorSteps.length - 1].slice());
 
     let pivot = array[array.length - 1];
-    let A = 0;
-    let B = array.length - 1;
+    let low = 0;
+    let high = array.length - 1;
 
-    while (A < B) {
-        while (array[A] < pivot) {
+    while (low < high) {
+        while (array[low] < pivot) {
             insertStep(array, barIndexPosition, arraySteps);
             let colorKey = colorSteps[colorSteps.length - 1].slice();
-            colorKey = colorKey.map((key) => (key === 3 ? 3 : 1));
-            colorKey[barIndexPosition + A] = 0;
-            colorKey[barIndexPosition + B] = 0;
+            colorKey = colorKey.map((key) => (key === 2 ? 2 : 1));
+            colorKey[barIndexPosition + low] = 0;
+            colorKey[barIndexPosition + high] = 0;
             colorSteps.push(colorKey);
-            A++;
+            low++;
         }
-        while (array[B] >= pivot) {
+        while (array[high] >= pivot) {
             insertStep(array, barIndexPosition, arraySteps);
             let colorKey = colorSteps[colorSteps.length - 1].slice();
-            colorKey = colorKey.map((key) => (key === 3 ? 3 : 1));
-            colorKey[barIndexPosition + A] = 0;
-            colorKey[barIndexPosition + B] = 0;
+            colorKey = colorKey.map((key) => (key === 2 ? 2 : 1));
+            colorKey[barIndexPosition + low] = 0;
+            colorKey[barIndexPosition + high] = 0;
             colorSteps.push(colorKey);
-            B--;
+            high--;
         }
-        if (A < B) {
-            swap(array, A, B);
+        if (low < high) {
+            swap(array, low, high);
             insertStep(array, barIndexPosition, arraySteps);
             let colorKey = colorSteps[colorSteps.length - 1].slice();
-            colorKey = colorKey.map((key) => (key === 3 ? 3 : 1));
-            colorKey[barIndexPosition + A] = 0;
-            colorKey[barIndexPosition + B] = 0;
+            colorKey = colorKey.map((key) => (key === 2 ? 2 : 1));
+            colorKey[barIndexPosition + low] = 0;
+            colorKey[barIndexPosition + high] = 0;
             colorSteps.push(colorKey);
         }
     }
 
-    let bigIndex = Math.max(A, B);
+    let bigIndex = Math.max(low, high);
 
     swap(array, bigIndex, array.length - 1);
     insertStep(array, barIndexPosition, arraySteps);
     let colorKey = colorSteps[colorSteps.length - 1].slice();
-    colorKey[barIndexPosition + bigIndex] = 3;
+    colorKey[barIndexPosition + bigIndex] = 2;
     colorSteps.push(colorKey);
 
-    quickSort(array.slice(0, A), barIndexPosition, arraySteps, colorSteps);
+    quickSort(array.slice(0, low), barIndexPosition, arraySteps, colorSteps);
     quickSort(
-        array.slice(A + 1),
-        barIndexPosition + A + 1,
+        array.slice(low + 1),
+        barIndexPosition + low + 1,
         arraySteps,
         colorSteps
     );
-
+    colorSteps[colorSteps.length - 1] = new Array(array.length).fill(3);
     return;
 };
 

@@ -25,10 +25,6 @@
     display: flex;
     align-items: flex-end;
 }
-.sorting-visualizer-title {
-    margin: 0.7rem;
-    color: var(--clr-primary-1);
-}
 
 .play-algorithms-button {
     font-size: 2.5rem;

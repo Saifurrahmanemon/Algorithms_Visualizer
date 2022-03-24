@@ -17,6 +17,7 @@ import {
     AlgorithmsSelector,
     ArrayBar,
     BarSizeController,
+    Header,
     SpeedController,
     Timer,
 } from "../components";
@@ -47,16 +48,16 @@ export default class SortingVisualizer extends React.Component {
 
     ALGORITHMS = {
         bubbleSort: bubbleSort,
-        mergeSort: mergeSort,
-        insertionSort: insertionSort,
         selectionSort: selectionSort,
+        insertionSort: insertionSort,
         quickSort: quickSort,
+        mergeSort: mergeSort,
     };
 
     componentDidMount() {
         this.generateNewArray();
     }
-    //? for generating new array
+    // for generating new array
     generateNewArray() {
         this.resetTimer();
         const array = [];
@@ -80,7 +81,7 @@ export default class SortingVisualizer extends React.Component {
         );
     }
 
-    //*this is the main core function i need to be careful of
+    //*this is the core method
     generateSteps() {
         let newArray = this.state.array.slice();
         let newSteps = this.state.arraySteps.slice();
@@ -98,7 +99,7 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: newColorSteps,
         });
     }
-    //? this is for resetting  color of the array after finishing  Animation
+    // this is for resetting  color of the array after  Animation is over
     clearColorElement = () => {
         let blankKey = new Array(this.state.count).fill(1);
 
@@ -107,7 +108,7 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: [blankKey],
         });
     };
-    //? for clearing timeouts
+    // for clearing timeouts
     clearTimeouts = () => {
         this.state.timeouts.forEach((timeout) => clearTimeout(timeout));
         this.setState({
@@ -116,7 +117,7 @@ export default class SortingVisualizer extends React.Component {
         });
     };
 
-    //? this is for starting visualization
+    // this is for starting visualization
     startVisualizer = () => {
         let steps = this.state.arraySteps;
         let colorSteps = this.state.colorSteps;
@@ -135,7 +136,12 @@ export default class SortingVisualizer extends React.Component {
                     currentStep: currentStep + 1,
                     isAlgorithmSortOver: false,
                 });
-                //* comparing the currentStep with steps.length and the state of isAlgorithmSortOver will remain false until the array is fully sorted.. Adding '+ 1' to currentStep because the steps.length always will be '+1' bigger than the currentStep..
+                /* --------------------------------------------------
+                 *Comparing the currentStep with steps.length to solve Timer issue. isAlgorithmSortOver will remain false until the array is fully sorted.
+
+                 *Adding '+ 1' to currentStep because the steps.length always will be '+1' bigger than the currentStep..
+                -----------------------------------------------------
+                 */
                 if (currentStep + 1 === steps.length) {
                     this.setState({
                         isAlgorithmSortOver: true,
@@ -151,11 +157,11 @@ export default class SortingVisualizer extends React.Component {
             isAlgorithmSortOver: false,
         });
     };
-    //?  for resetting the timer by using useTime hook from (store.js)
+    //  for resetting the timer by using useTime hook from (store.js)
     resetTimer = () => {
         useTime.getState().resetTime();
     };
-    //?  for changing  algorithm
+    // for changing  algorithm
     selectAlgorithm = (event) => {
         this.setState(
             {
@@ -175,11 +181,11 @@ export default class SortingVisualizer extends React.Component {
 
         this.generateNewArray();
     };
-    //? for changing the bar size
+    // for changing the bar size
     changeBarCount = (event) => {
         this.setState({ count: event.target.value });
     };
-    //? for changing animation speed
+    // for changing animation speed
     changeAnimationSpeed = (event) => {
         this.clearTimeouts();
         this.setState({
@@ -201,7 +207,7 @@ export default class SortingVisualizer extends React.Component {
 
         let playAlgorithmsButton;
 
-        //? Set player controls
+        //Set player controls
         if (timeouts.length !== 0 && currentStep !== arraySteps.length) {
             playAlgorithmsButton = (
                 <div onClick={() => this.clearTimeouts()}>
@@ -223,11 +229,7 @@ export default class SortingVisualizer extends React.Component {
         }
         return (
             <div className="sorting-visualizer-container">
-                <header>
-                    <h4 className="sorting-visualizer-title">
-                        Sorting Algorithms Visualizer
-                    </h4>
-                </header>
+                <Header />
                 <AlgorithmsSelector
                     values={Object.keys(this.ALGORITHMS)}
                     currentValue={algorithm}

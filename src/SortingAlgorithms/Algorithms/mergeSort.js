@@ -3,7 +3,7 @@ import { insertStep } from "../utils/helpers";
 const mergeSort = (array, barIndexPosition, arraySteps, colorSteps) => {
     if (array.length === 1) return array;
     let mid = Math.floor(array.length / 2);
-    //dividing array into two halves recursively
+    //dividing array recursively
     let leftArray = mergeSort(
         array.slice(0, mid),
         barIndexPosition,
@@ -42,11 +42,11 @@ const merge = (
     colorSteps
 ) => {
     let newArray = [];
-    let A = 0;
-    let B = 0;
+    let firstHalf = 0;
+    let secondHalf = 0;
 
     while (leftArray.length > 0 && rightArray.length > 0) {
-        if (leftArray[A] < rightArray[B]) {
+        if (leftArray[firstHalf] < rightArray[secondHalf]) {
             newArray.push(leftArray.shift());
             insertStep(newArray, barIndexPosition, arraySteps);
         } else {

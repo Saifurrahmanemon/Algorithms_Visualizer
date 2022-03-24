@@ -9,15 +9,15 @@ const insertionSort = (array, barIndexPosition, arraySteps, colorSteps) => {
         while (j >= 0 && array[j] > key) {
             array[j + 1] = array[j];
             arraySteps.push(array.slice());
-            colorKey[i] = 2;
+            colorKey[i] = 0;
             if (i === j + 1) {
                 colorKey[j + 1] = 2;
             } else {
                 colorKey[j + 1] = 0;
             }
-            colorKey[j] = 2;
+            colorKey[j] = 0;
             colorSteps.push(colorKey.slice());
-            colorKey[j + 1] = 1;
+            colorKey[j + 1] = 2;
             colorKey[i] = 1;
             colorKey[j] = 2;
             j = j - 1;

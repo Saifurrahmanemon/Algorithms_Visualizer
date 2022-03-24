@@ -1,7 +1,7 @@
 import { swap } from "../utils/helpers";
 
-const bubbleSort = (array, barIndexPosition, steps, colors) => {
-    let colorKey = colors[colors.length - 1].slice();
+const bubbleSort = (array, barIndexPosition, steps, colorSteps) => {
+    let colorKey = colorSteps[colorSteps.length - 1].slice();
     let i, j;
     let swapped;
 
@@ -15,18 +15,18 @@ const bubbleSort = (array, barIndexPosition, steps, colors) => {
             steps.push(array.slice());
             colorKey[j] = 0;
             colorKey[j + 1] = 0;
-            colors.push(colorKey.slice());
+            colorSteps.push(colorKey.slice());
             colorKey[j] = 1;
             colorKey[j + 1] = 1;
         }
         colorKey[array.length - 1 - i] = 2;
         steps.push(array.slice());
-        colors.push(colorKey.slice());
+        colorSteps.push(colorKey.slice());
 
         if (swapped === false) break;
     }
 
-    colors[colors.length - 1] = new Array(array.length).fill(3);
+    colorSteps[colorSteps.length - 1] = new Array(array.length).fill(3);
 
     return;
 };

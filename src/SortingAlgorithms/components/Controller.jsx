@@ -1,20 +1,20 @@
 import { Slider } from "@mui/material";
 import React from "react";
 
-export default function BarSizeController({ changeBarCount, count }) {
+export default function Controller({ changeCount, count, children }) {
+    const { step, min, max } = children;
     return (
         <div>
-            <h5>Bar Size</h5>
             <Slider
                 aria-labelledby="discrete-slider"
                 defaultValue={count}
                 key={`value-${count}`}
                 valueLabelDisplay="auto"
-                onChange={changeBarCount}
-                step={2}
+                onChange={changeCount}
+                step={step}
                 marks
-                min={10}
-                max={30}
+                min={min}
+                max={max}
                 color="secondary"
                 style={{ width: "50%" }}
             />

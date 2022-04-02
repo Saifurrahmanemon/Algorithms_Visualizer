@@ -1,9 +1,6 @@
 //MUI
 import { Button } from "@mui/material";
 import React from "react";
-//React Icons
-import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
-import { MdReplay } from "react-icons/md";
 // Algorithms
 import {
     bubbleSort,
@@ -14,11 +11,11 @@ import {
 } from "../Algorithms";
 // Components
 import {
+    AlgorithmButton,
     AlgorithmsSelector,
     ArrayBar,
-    BarSizeController,
+    Controller,
     Header,
-    SpeedController,
     Timer,
 } from "../components";
 //Utils
@@ -29,8 +26,8 @@ import { useTime } from "../utils/store";
 import "./SortingVisualizer.css";
 
 export default class SortingVisualizer extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             array: [],
@@ -54,11 +51,24 @@ export default class SortingVisualizer extends React.Component {
         mergeSort: mergeSort,
     };
 
+    // for animation speed controller
+    speedController = {
+        step: 50,
+        min: 50,
+        max: 500,
+    };
+    // for bar size controller
+    BarController = {
+        step: 2,
+        min: 10,
+        max: 30,
+    };
+
     componentDidMount() {
         this.generateNewArray();
     }
     // for generating new array
-    generateNewArray() {
+    generateNewArray = () => {
         this.resetTimer();
         const array = [];
         this.clearColorElement();
@@ -79,16 +89,17 @@ export default class SortingVisualizer extends React.Component {
                 this.generateSteps();
             }
         );
-    }
+    };
 
     //*this is the core method
     generateSteps() {
-        let newArray = this.state.array.slice();
-        let newSteps = this.state.arraySteps.slice();
-        let newColorSteps = this.state.colorSteps.slice();
+        const { array, arraySteps, colorSteps, algorithm } = this.state;
+        let newArray = array.slice();
+        let newSteps = arraySteps.slice();
+        let newColorSteps = colorSteps.slice();
 
         let barIndexPosition = 0;
-        this.ALGORITHMS[this.state.algorithm](
+        this.ALGORITHMS[algorithm](
             newArray,
             barIndexPosition,
             newSteps,
@@ -99,7 +110,7 @@ export default class SortingVisualizer extends React.Component {
             colorSteps: newColorSteps,
         });
     }
-    // this is for resetting  color of the array after  Animation is over
+    // for resetting  color of the array after  Animation is over
     clearColorElement = () => {
         let blankKey = new Array(this.state.count).fill(1);
 
@@ -117,7 +128,7 @@ export default class SortingVisualizer extends React.Component {
         });
     };
 
-    // this is for starting visualization
+    //  for starting visualization
     startVisualizer = () => {
         let steps = this.state.arraySteps;
         let colorSteps = this.state.colorSteps;
@@ -165,7 +176,7 @@ export default class SortingVisualizer extends React.Component {
     selectAlgorithm = (event) => {
         this.setState(
             {
-                // this will set the value
+                // this will set the value for the algorithm
                 algorithm: event.target.value,
                 currentStep: 0,
                 arraySteps: [
@@ -200,33 +211,8 @@ export default class SortingVisualizer extends React.Component {
             count,
             isAlgorithmSortOver,
             algorithm,
-            timeouts,
-            arraySteps,
             delayAnimation,
         } = this.state;
-
-        let playAlgorithmsButton;
-
-        //Set player controls
-        if (timeouts.length !== 0 && currentStep !== arraySteps.length) {
-            playAlgorithmsButton = (
-                <div onClick={() => this.clearTimeouts()}>
-                    <BsFillStopFill className="stop-icon" />
-                </div>
-            );
-        } else if (currentStep === arraySteps.length) {
-            playAlgorithmsButton = (
-                <div onClick={() => this.generateNewArray()}>
-                    <MdReplay className="replay-icon" />
-                </div>
-            );
-        } else {
-            playAlgorithmsButton = (
-                <div onClick={() => this.startVisualizer()}>
-                    <BsFillPlayFill className="start-icon" />
-                </div>
-            );
-        }
         return (
             <div className="sorting-visualizer-container">
                 <Header />
@@ -266,20 +252,31 @@ export default class SortingVisualizer extends React.Component {
                 </div>
                 <div className="controller-container">
                     <div className="controller">
-                        <BarSizeController
-                            changeBarCount={this.changeBarCount}
+                        <h5>Bar Size</h5>
+                        <Controller
+                            changeCount={this.changeBarCount}
                             count={count}
-                        />
+                        >
+                            {this.BarController}
+                        </Controller>
                     </div>
                     <div className="play-algorithms-button">
-                        {playAlgorithmsButton}
+                        <AlgorithmButton
+                            {...this.state}
+                            startVisualizer={this.startVisualizer}
+                            clearTimeouts={this.clearTimeouts}
+                            generateNewArray={this.generateNewArray}
+                        ></AlgorithmButton>
                     </div>
 
                     <div className="controller">
-                        <SpeedController
-                            changeAnimationSpeed={this.changeAnimationSpeed}
-                            currentSpeed={delayAnimation}
-                        />
+                        <h5>Animation speed</h5>
+                        <Controller
+                            changeCount={this.changeAnimationSpeed}
+                            count={delayAnimation}
+                        >
+                            {this.speedController}
+                        </Controller>
                     </div>
                 </div>
             </div>

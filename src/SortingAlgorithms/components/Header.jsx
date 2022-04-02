@@ -7,7 +7,10 @@ const Header = () => {
             <h4 className="sorting-visualizer-title">
                 Sorting Algorithms Visualizer
             </h4>
-            <a href="https://github.com/Saifurrahmanemon/" target="_blank">
+            <a
+                href="https://github.com/Saifurrahmanemon/Algorithms_Visualizer"
+                target="_blank"
+            >
                 <AiFillGithub className="github-icon" />
             </a>
         </header>

@@ -2,7 +2,7 @@
     Algorithm Visualizer
 </h1>
 
-## Responsive visualizer built using React for popular algorithms
+## Algorithms visualizer built using React
 ----
 <br/>
 <h2>

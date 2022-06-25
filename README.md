@@ -9,10 +9,9 @@
     Sorting Visualizer
 </h2>
 
-<a align="center" href="https://sadanandpai.github.io/sorting-visualizer/dist/"><img src="sortingVisualizer.png" alt="sorting" /></a>
+<a align="center" href="https://algorithmsvisualizers.netlify.app/"><img src="sortingVisualizer.png" alt="sorting" /></a>
 
 <br/>
-
 
 
 ### An attempt to make a visualizer for popular algorithms. So far, finished with visualizing popular sorting algorithms like Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort.
